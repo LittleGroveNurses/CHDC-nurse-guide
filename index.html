@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Child Health Check: Clinical Guide &#8212; Little Grove</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#26315e; --navy-mid:#3a4878; --navy-light:#eaecf4; --navy-xlight:#f4f5fa;
+  --teal:#0e6057; --teal-mid:#1a7a6e; --teal-light:#e2f0ee; --teal-xlight:#f0f8f6;
+  --green:#45ab75; --green-dark:#1e6640; --green-light:#e8f6ee;
+  --mauve:#c473a7; --mauve-dark:#7a2d60; --mauve-light:#fae7f8; --mauve-xlight:#fdf4fc;
+  --text:#1a1f3a; --text-sec:#3a4260; --text-muted:#7a82a8;
+  --bg:#f5f6fa; --bg-card:#ffffff; --border:#dde0ef;
+  --radius:12px; --radius-sm:8px;
+}
+body{font-family:'SofiaPro',system-ui,sans-serif;font-weight:400;background:var(--bg);color:var(--text);line-height:1.6}
+.wrap{max-width:800px;margin:0 auto;padding:2rem 1.25rem 4rem}
+.hdr{background:var(--navy);border-radius:var(--radius);padding:1.75rem 2.25rem;margin-bottom:1.5rem;display:flex;gap:1.5rem;align-items:flex-start;flex-wrap:wrap}
+.hdr-logo{height:32px;width:auto;flex-shrink:0;margin-top:3px}
+.hdr-txt{flex:1;min-width:200px}
+.hdr-sub{font-size:10px;font-weight:600;letter-spacing:.12em;color:#8a9bbf;text-transform:uppercase;margin-bottom:.35rem}
+.hdr h1{font-size:21px;font-weight:700;color:#fff;margin-bottom:.25rem}
+.hdr p{font-size:13px;color:#b8c5dc;line-height:1.5}
+.prog-bar{height:3px;background:rgba(255,255,255,.12);border-radius:2px;margin-top:1.1rem}
+.prog-fill{height:100%;background:var(--green);border-radius:2px;transition:width .35s ease}
+.prog-lbl{font-size:10px;font-weight:500;color:#8a9bbf;margin-top:.35rem}
+.nav{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:1.5rem}
+.nb{font-family:'SofiaPro',sans-serif;font-size:12px;font-weight:500;padding:6px 13px;border-radius:20px;border:1px solid var(--border);background:var(--bg-card);color:var(--text-sec);cursor:pointer;transition:all .15s;white-space:nowrap}
+.nb:hover{background:var(--navy-light)}.nb.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.nbadge{font-size:9px;font-weight:700;padding:1px 5px;border-radius:8px;background:var(--green-light);color:var(--green-dark);text-transform:uppercase;letter-spacing:.05em;vertical-align:middle;margin-left:3px}
+.sec{display:none}.sec.active{display:block}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem 1.5rem;margin-bottom:1rem}
+.ct{font-size:14.5px;font-weight:600;color:var(--text);margin-bottom:.75rem;display:flex;align-items:center;gap:9px}
+.dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.d-n{background:var(--navy)}.d-t{background:var(--teal)}.d-g{background:var(--green)}.d-m{background:var(--mauve)}.d-nl{background:var(--navy-mid)}
+.sh{font-size:20px;font-weight:700;color:var(--text);margin-bottom:.35rem}
+.si{font-size:13.5px;color:var(--text-sec);line-height:1.7;margin-bottom:1.25rem;max-width:640px}
+.bt{font-size:13.5px;color:var(--text-sec);line-height:1.7;margin-bottom:.75rem}
+.bt:last-child{margin-bottom:0}
+.sub{font-size:13px;font-weight:700;color:var(--navy);margin:.9rem 0 .4rem}
+.tip{border-radius:var(--radius-sm);padding:.85rem 1.1rem;margin-bottom:1rem;font-size:13px;line-height:1.55}
+.tip strong{font-weight:600}
+.tip-n{background:var(--navy-light);color:var(--navy);border-left:3px solid var(--navy)}
+.tip-t{background:var(--teal-light);color:var(--teal);border-left:3px solid var(--teal)}
+.tip-m{background:var(--mauve-light);color:var(--mauve-dark);border-left:3px solid var(--mauve)}
+.tip-g{background:var(--green-light);color:var(--green-dark);border-left:3px solid var(--green)}
+.fc{border-left:3px solid;border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:.8rem 1rem;margin-bottom:.6rem}
+.fc-r{background:var(--mauve-light);border-color:var(--mauve)}
+.fc-w{background:var(--navy-light);border-color:var(--navy-mid)}
+.fc-ok{background:var(--green-light);border-color:var(--green)}
+.fc-t{font-size:13px;font-weight:600;margin-bottom:3px}
+.fc-r .fc-t{color:var(--mauve-dark)}.fc-w .fc-t{color:var(--navy)}.fc-ok .fc-t{color:var(--green-dark)}
+.fc-b{font-size:13px;line-height:1.55}
+.fc-r .fc-b{color:var(--mauve-dark)}.fc-w .fc-b{color:var(--navy)}.fc-ok .fc-b{color:var(--green-dark)}
+.ww{width:100%;border-collapse:collapse;margin:.6rem 0 .9rem;font-size:13px}
+.ww th{background:var(--navy);color:#fff;font-weight:600;padding:.55rem .75rem;text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.05em}
+.ww td{padding:.55rem .75rem;vertical-align:top;border-bottom:1px solid var(--border);line-height:1.5;color:var(--text-sec)}
+.ww tr:last-child td{border-bottom:none}
+.ww tr:nth-child(even) td{background:var(--navy-xlight)}
+.ww td:first-child{font-weight:500;color:var(--text);width:44%}
+.pills{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin:.85rem 0}
+.pill{border-radius:var(--radius-sm);padding:.7rem .9rem;text-align:center}
+.pill-g{background:var(--green-light)}.pill-w{background:var(--navy-light)}.pill-r{background:var(--mauve-light)}
+.pill-lbl{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px}
+.pill-g .pill-lbl{color:var(--green-dark)}.pill-w .pill-lbl{color:var(--navy)}.pill-r .pill-lbl{color:var(--mauve-dark)}
+.pill-desc{font-size:12px;line-height:1.4}
+.pill-g .pill-desc{color:var(--green-dark)}.pill-w .pill-desc{color:var(--navy)}.pill-r .pill-desc{color:var(--mauve-dark)}
+.steps{list-style:none}
+.si2{display:flex;gap:12px;align-items:flex-start;padding:.65rem 0;border-bottom:1px solid var(--border)}
+.si2:last-child{border-bottom:none}
+.snum{width:24px;height:24px;border-radius:50%;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px}
+.stitle{font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px}
+.sbody{font-size:13px;color:var(--text-sec);line-height:1.5}
+.cb{border-radius:var(--radius);padding:1rem 1.1rem;margin-bottom:.65rem}
+.cb-n{background:var(--navy);border-radius:var(--radius) var(--radius) var(--radius) 4px}
+.cb-n .cb-lbl{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#8a9bbf;margin-bottom:5px}
+.cb-n p{font-size:13px;color:#d8e2f0;line-height:1.6}
+.cb-note{background:var(--bg);border:1px solid var(--border);border-radius:4px var(--radius) var(--radius) var(--radius)}
+.cb-note .cb-lbl{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-bottom:5px}
+.cb-note p{font-size:13px;color:var(--text-sec);line-height:1.6;font-style:italic}
+.stier{border-radius:var(--radius-sm);padding:.85rem 1rem;margin-bottom:.65rem;display:flex;gap:12px;align-items:flex-start}
+.stier-1{background:var(--mauve-light)}.stier-2{background:var(--navy-light)}.stier-3{background:var(--teal-light)}
+.stnum{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px}
+.stier-1 .stnum{background:var(--mauve);color:#fff}.stier-2 .stnum{background:var(--navy);color:#fff}.stier-3 .stnum{background:var(--teal);color:#fff}
+.stt{font-size:13px;font-weight:600;margin-bottom:3px}
+.stier-1 .stt{color:var(--mauve-dark)}.stier-2 .stt{color:var(--navy)}.stier-3 .stt{color:var(--teal)}
+.std{font-size:13px;line-height:1.5}
+.stier-1 .std{color:var(--mauve-dark)}.stier-2 .std{color:var(--navy)}.stier-3 .std{color:var(--teal)}
+.dg{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:.75rem}
+.dp{border-radius:var(--radius-sm);padding:.85rem 1rem}
+.dp-gm{background:var(--teal-light)}.dp-fm{background:var(--navy-light)}.dp-lang{background:var(--mauve-light)}.dp-soc{background:var(--mauve-xlight)}.dp-cog{background:var(--green-light)}.dp-vis{background:var(--teal-xlight)}
+.dp-l{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
+.dp-gm .dp-l{color:var(--teal)}.dp-fm .dp-l{color:var(--navy)}.dp-lang .dp-l{color:var(--mauve-dark)}.dp-soc .dp-l{color:var(--mauve-dark)}.dp-cog .dp-l{color:var(--green-dark)}.dp-vis .dp-l{color:var(--teal)}
+.dp-c{font-size:12px;line-height:1.5}
+.dp-gm .dp-c{color:var(--teal)}.dp-fm .dp-c{color:var(--navy)}.dp-lang .dp-c{color:var(--mauve-dark)}.dp-soc .dp-c{color:var(--mauve-dark)}.dp-cog .dp-c{color:var(--green-dark)}.dp-vis .dp-c{color:var(--teal)}
+.atabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem}
+.at{font-family:'SofiaPro',sans-serif;font-size:12.5px;font-weight:500;padding:6px 16px;border-radius:20px;border:1px solid var(--border);background:var(--navy-xlight);color:var(--text-sec);cursor:pointer;transition:all .15s}
+.at.active{background:var(--teal);color:#fff;border-color:var(--teal)}
+.mp{display:none}.mp.active{display:block}
+.wgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:1.25rem}
+.dc{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:.9rem 1rem}
+.dlbl{font-size:9.5px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px}
+.dtitle{font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px}
+.ddesc{font-size:12px;color:var(--text-sec);line-height:1.4}
+.ri{display:flex;gap:12px;align-items:flex-start;padding:.85rem 0;border-bottom:1px solid var(--border)}
+.ri:last-child{border-bottom:none}
+.rbadge{font-size:9.5px;font-weight:700;padding:3px 9px;border-radius:10px;flex-shrink:0;margin-top:3px;text-transform:uppercase;letter-spacing:.04em}
+.rb-bk{background:var(--teal-light);color:var(--teal)}.rb-on{background:var(--navy-light);color:var(--navy)}.rb-tl{background:var(--mauve-light);color:var(--mauve-dark)}
+.rtitle{font-size:13.5px;font-weight:600;color:var(--text);margin-bottom:3px}
+.rdesc{font-size:13px;color:var(--text-sec);line-height:1.5}
+.rdesc a{color:var(--teal)}
+.nxt{font-family:'SofiaPro',sans-serif;display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;padding:10px 22px;border-radius:var(--radius-sm);background:var(--navy);color:#fff;border:none;cursor:pointer;margin-top:.85rem;transition:background .15s}
+.nxt:hover{background:var(--navy-mid)}
+.divlbl{font-size:10.5px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.07em;margin:1rem 0 .65rem}
+.snote{background:var(--navy);border-radius:var(--radius-sm);padding:.9rem 1.1rem;margin-bottom:1rem;font-size:13px;color:#b8c5dc;line-height:1.5}
+.snote strong{color:#fff}
+.footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.fbrand{font-size:13px;color:var(--text-muted)}.fbrand strong{color:var(--navy)}
+.fcontact{font-size:12px;color:var(--text-muted);text-align:right}
+@media(max-width:540px){
+  .wrap{padding:1rem 1rem 3rem}
+  .hdr{padding:1.25rem;flex-direction:column;gap:.75rem}
+  .wgrid{grid-template-columns:1fr 1fr}
+  .footer{flex-direction:column}.fcontact{text-align:left}
+}
+
+</style>
+</head>
+<body>
+
+<div class="wrap">
+<div class="hdr">
+  <div class="hdr-txt">
+    <div class="hdr-sub">Little Grove &#8212; nurse orientation</div>
+    <h1>Child Health Check: Clinical Guide</h1>
+    <p>Self-paced learning module &#8212; all CHDC ages and form sections including full physical assessment. Work through each section across your first week.</p>
+    <div class="prog-bar"><div class="prog-fill" id="prog" style="width:9.1%"></div></div>
+    <div class="prog-lbl" id="prog-lbl">Section 1 of 11</div>
+  </div>
+</div>
+<div class="nav">
+  <button class="nb active" onclick="go(0)">Overview</button>
+  <button class="nb" onclick="go(1)">Why it matters</button>
+  <button class="nb" onclick="go(2)">Growth</button>
+  <button class="nb" onclick="go(3)">Eyes &amp; vision</button>
+  <button class="nb" onclick="go(4)">Ears &amp; hearing <span class="nbadge">SS</span></button>
+  <button class="nb" onclick="go(5)">Oral health</button>
+  <button class="nb" onclick="go(6)">Immunisation</button>
+  <button class="nb" onclick="go(7)">Physical exam</button>
+  <button class="nb" onclick="go(8)">Development</button>
+  <button class="nb" onclick="go(9)">Talking with families</button>
+  <button class="nb" onclick="go(10)">Safeguarding &amp; resources</button>
+</div>
+
+<div class="sec active" id="s0">
+  <p class="sh">Your learning plan this week</p>
+  <p class="si">Work through each section at your own pace &#8212; there are no quizzes. This is a clinical reference structured around the Little Grove Child Health &amp; Development Check form. Return to any section as you start seeing children in clinic.</p>
+  <div class="wgrid">
+    <div class="dc"><div class="dlbl">Day 1</div><div class="dtitle">Why it matters</div><div class="ddesc">Purpose of CHDC and developmental surveillance</div></div>
+    <div class="dc"><div class="dlbl">Day 1&#8211;2</div><div class="dtitle">Growth</div><div class="ddesc">Weight, height, BMI, head circumference &#8212; technique and interpretation</div></div>
+    <div class="dc"><div class="dlbl">Day 2</div><div class="dtitle">Eyes &amp; vision</div><div class="ddesc">Hirschberg, cover test, fixation, 4-year vision chart</div></div>
+    <div class="dc"><div class="dlbl">Day 2</div><div class="dtitle">Ears &amp; hearing</div><div class="ddesc">TM examination, Sound Scouts protocol step by step</div></div>
+    <div class="dc"><div class="dlbl">Day 3</div><div class="dtitle">Oral health</div><div class="ddesc">Lift the Lip technique, plaque, caries, referral triggers</div></div>
+    <div class="dc"><div class="dlbl">Day 3</div><div class="dtitle">Physical exam</div><div class="ddesc">Head, hips, genitalia, testes, skin, chest, heart, gait &#8212; all ages</div></div>
+    <div class="dc"><div class="dlbl">Day 4</div><div class="dtitle">Development</div><div class="ddesc">Sheridan domains, milestones, ASQ-3, ASQ:SE-2, Brigance &#8212; all ages</div></div>
+    <div class="dc"><div class="dlbl">Day 4&#8211;5</div><div class="dtitle">Talking with families</div><div class="ddesc">Sharing results, raising concerns, red flags</div></div>
+    <div class="dc"><div class="dlbl">Day 5</div><div class="dtitle">Safeguarding &amp; resources</div><div class="ddesc">SA mandatory reporting, CARL, key references</div></div>
+  </div>
+  <div class="tip tip-n"><strong>Before you start:</strong> Obtain your copies of Sheridan's From Birth to Five Years and the Meggitt Illustrated Guide from Ariane. Ensure you have been shown the Sound Scouts app and calibrated headphones before your first hearing assessment.</div>
+  <button class="nxt" onclick="go(1)">Start module &rarr;</button>
+</div>
+
+<div class="sec" id="s1">
+  <p class="sh">Why the child health check matters</p>
+  <p class="si">The CHDC is not about finding problems &#8212; it is about understanding the whole child within their family and environment, and identifying difficulties early when intervention is most effective. Brain plasticity is greatest in the first five years.</p>
+  <div class="card">
+    <div class="ct"><div class="dot d-n"></div>Developmental surveillance</div>
+    <p class="bt">Surveillance is an ongoing, flexible process &#8212; not a single test. It involves listening to parent concerns, observing the child, and comparing what you see against expected developmental ranges. Always ask about parent concerns first; they are your most important source of information.</p>
+  </div>
+  <div class="card">
+    <div class="ct"><div class="dot d-t"></div>Sheridan's six developmental domains</div>
+    <p class="bt">No domain develops in isolation &#8212; delays in one area often affect others.</p>
+    <div class="dg">
+      <div class="dp dp-gm"><div class="dp-l">Gross motor</div><div class="dp-c">Large body movements &#8212; balance, coordination, walking, running, climbing</div></div>
+      <div class="dp dp-fm"><div class="dp-l">Fine motor</div><div class="dp-c">Hand and finger skills &#8212; grasping, drawing, manipulating objects</div></div>
+      <div class="dp dp-lang"><div class="dp-l">Speech &amp; language</div><div class="dp-c">Expressive and receptive language &#8212; words, sentences, understanding</div></div>
+      <div class="dp dp-soc"><div class="dp-l">Social &amp; emotional</div><div class="dp-c">Relationships, play, self-regulation, emotional expression</div></div>
+      <div class="dp dp-cog"><div class="dp-l">Cognitive</div><div class="dp-c">Problem-solving, learning, memory, cause and effect</div></div>
+      <div class="dp dp-vis"><div class="dp-l">Vision &amp; hearing</div><div class="dp-c">Sensory foundations that underpin all other development</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ct"><div class="dot d-g"></div>Little Grove's role</div>
+    <p class="bt">Little Grove delivers CHDCs in clinic (Underdale and Thebarton) and in ECEC settings. You use structured tools &#8212; ASQ-3, ASQ:SE-2, Brigance &#8212; alongside direct observation and parent report. The CHDC app is your real-time clinical reference; keep it updated and out of family view.</p>
+  </div>
+  <button class="nxt" onclick="go(2)">Next: growth &rarr;</button>
+</div>
+
+<div class="sec" id="s2">
+  <p class="sh">Growth assessment</p>
+  <p class="si">&#128241; CHDC App: Growth &#8212; Weight, Height/Length, BMI, Head Circumference. Growth monitoring is one of the most sensitive indicators of a child's overall health. Serial measurements are more informative than single readings.</p>
+  <div class="card">
+    <div class="ct"><div class="dot d-n"></div>Weight &amp; height / length</div>
+    <table class="ww">
+      <tr><th>What to look for</th><th>Why it matters</th></tr>
+      <tr><td>Weigh undressed (nappy only for infants). Use calibrated scales.</td><td>Clothing adds 0.5&#8211;1 kg; inconsistent technique inflates measurement error across visits.</td></tr>
+      <tr><td>Plot on correct WHO chart (0&#8211;2 yr) or CDC chart (2 yr+) for age and sex.</td><td>Charts differ significantly; using the wrong chart produces misleading percentile results.</td></tr>
+      <tr><td>Note trend across visits &#8212; crossing two or more centile lines downward is more significant than a single low reading.</td><td>Faltering growth is defined by sustained downward centile crossing, not a single low weight.</td></tr>
+      <tr><td>Length (lying) for under 2 years; standing height (stadiometer) for 2 years and over.</td><td>Mixing techniques introduces up to 2 cm discrepancy, distorting height-for-age percentile.</td></tr>
+    </table>
+<div class="fc fc-ok"><div class="fc-b">&#10003; Weight and height/length tracking within &#177;2 centile lines of previous visit.</div></div><div class="fc fc-ok"><div class="fc-b">&#10003; Growth pattern consistent with parental heights (mid-parental height calculation).</div></div><div class="fc fc-w"><div class="fc-b">&#9679; Weight crossing two or more major centile lines downward over two or more visits.</div></div><div class="fc fc-w"><div class="fc-b">&#9679; Weight consistently below 2nd percentile with no familial explanation.</div></div><div class="fc fc-w"><div class="fc-b">&#9679; Disproportionate upward weight gain &#8212; consider dietary review.</div></div><div class="fc fc-r"><div class="fc-t">&#9650; Sustained weight faltering unresponsive to dietary and feeding intervention</div><div class="fc-b"><strong>Refer to NP.</strong> Typical referral path: dietitian review, then paediatric review if no response. Specialist: <em>Paediatric dietitian / general paediatrician</em>.</div></div><div class="fc fc-r"><div class="fc-t">&#9650; Height below 0.4th percentile with no familial cause</div><div class="fc-b"><strong>Refer to NP.</strong> Typical referral path: paediatric review. Specialist: <em>General paediatrician or paediatric endocrinologist</em>.</div></div><div class="fc fc-r"><div class="fc-t">&#9650; Severe acute malnutrition (weight-for-height Z-score &lt; &#8722;3)</div><div class="fc-b"><strong>Refer to NP.</strong> Typical referral path: same-day paediatric review. Specialist: <em>General paediatrician / ED if acutely unwell</em>.</div></div>
+  </div>
+  <div class="card">
+    <div class="ct"><div class="dot d-t"></div>BMI &#8212; 2 years and older only</div>
+    <p class="bt">BMI is a screening tool only. In children, BMI is age- and sex-specific (BMI-for-age percentile).</p>
+    <table class="ww">
+      <tr><th>BMI-for-age percentile</th><th>Interpretation &amp; action</th></tr>
+      <tr><td>&lt; 5th percentile</td><td>Underweight &#8212; assess dietary intake, psychosocial factors, underlying illness.</td></tr>
+      <tr><td>5th&#8211;84th percentile</td><td>Healthy weight range.</td></tr>
+      <tr><td>85th&#8211;94th percentile</td><td>Overweight &#8212; dietary and activity counselling; monitor at next check.</td></tr>
+      <tr><td>&#8805; 95th percentile</td><td>Obesity &#8212; structured management plan; refer to NP for dietitian referral and monitoring.</td></tr>
+    </table>
+    <div class="tip tip-m"><strong>Confidence note:</strong> BMI cut-off percentiles vary slightly between Australian NHMRC and IOTF thresholds. Always cross-reference with current SA Health or NHMRC guidance.</div>
+  </div>
+  <div class="card">
+    <div class="ct"><div class="dot d-g"></div>Head circumference &#8212; 6 month, 18 month, 2 year checks only</div>
+    <p class="bt">Measure with a non-stretch tape at the maximum occipitofrontal circumference. Plot on the WHO chart.</p>
+    <table class="ww">
+      <tr><th>What to look for</th><th>Why it matters</th></tr>
+      <tr><td>Consistent technique &#8212; tape above eyebrows, around widest part.</td><td>Inconsistent technique produces up to 1 cm error, significant on a growth chart.</td></tr>
+      <tr><td>Note fontanelle size and tension at 6 months.</td><td>Bulging fontanelle with rapidly growing head circumference suggests raised intracranial pressure.</td></tr>
+      <tr><td>Downward centile crossing over serial measurements.</td><td>May indicate poor brain growth; requires investigation.</td></tr>
+    </table>
+<div class="fc fc-r"><div class="fc-t">&#9650; Head circumference crossing &#8805;2 centile lines upward (macrocephaly)</div><div class="fc-b"><strong>Refer to NP.</strong> Typical referral path: paediatric review; imaging may be indicated. Specialist: <em>General paediatrician &#8212; rule out hydrocephalus</em>.</div></div><div class="fc fc-r"><div class="fc-t">&#9650; Head circumference crossing &#8805;2 centile lines downward (microcephaly)</div><div class="fc-b"><strong>Refer to NP.</strong> Typical referral path: paediatric review. Specialist: <em>General paediatrician or paediatric neurologist</em>.</div></div><div class="fc fc-r"><div class="fc-t">&#9650; Any sudden change in rate of head circumference growth</div><div class="fc-b"><strong>Refer to NP.</strong> Typical referral path: same-day paediatric review. Specialist: <em>General paediatrician</em>.</div></div>
+  </div>
+  <button class="nxt" onclick="go(3)">Next: eyes &amp; vision &rarr;</button>
+</div>
+
+<div class="sec" id="s3">
+  <p class="sh">Eyes &amp; vision</p>
+  <p class="si">&#128241; CHDC App: Eyes &#8212; Vision Screening, Cover Test, Corneal Reflections. Vision screening aims to detect amblyopia and its causes during the critical window of visual development (birth to ~7&#8211;8 years). Untreated amblyopia causes permanent visual impairment.</p>
+  <div class="card">
+    <div class="ct"><div class="dot d-n"></div>Observation &#8212; all ages</div>
+    <table class="ww">
+      <tr><th>What to look for</th><th>Why it matters</th></tr>
+      <tr><td>Observe eyes at rest and during play before formal testing.</td><td>Squinting, head tilting, eye rubbing, or avoiding one eye being covered may reveal concerns in uncooperative children.</td></tr>
+      <tr><td>Note structural abnormalities: ptosis, coloboma, nystagmus, corneal clouding.</td><td>May indicate underlying ophthalmic or systemic disease requiring specialist review.</td></tr>
+    </table>
+<div class="fc fc-r"><div class="fc-t">&#9650; Leukocoria &#8212; white pupil reflex</div><div class="fc-b"><strong>Refer to NP.</strong> Typical referral path: same-day urgent referral &#8212; discuss with Ariane immediately. Specialist: <em>Ophthalmology same day. May indicate retinoblastoma or cataract</em>.</div></div>
+  </div>
+  <div class="card">
+    <div class="ct"><div class="dot d-t"></div>Corneal light reflections (Hirschberg test) &#8212; all ages</div>
+    <p class="bt">Shine a pen torch at the bridge of the nose from ~50 cm. Symmetrical central reflections indicate normal ocular alignment. Asymmetry suggests strabismus.</p>
+    <div class="tip tip-t"><strong>Pseudostrabismus</strong> is common in infants with a flat nasal bridge &#8212; eyes appear crossed but corneal reflections are symmetrical. This is normal and resolves as the face matures.</div>
+<div class="fc fc-r"><div class="fc-t">&#9650; Asymmetric corneal light reflex at any age</div><div class="fc-b"><strong>Refer to NP.</strong> Typical referral path: orthoptist assessment. Specialist: <em>Orthoptist, then ophthalmologist if confirmed</em>.</div></div>
+  </div>
+  <div class="card">
+    <div class="ct"><div class="dot d-g"></div>Fixation &amp; cover test &#8212; all ages</div>
+    <table class="ww">
+      <tr><th>What to look for</th><th>Why it matters</th></tr>
+      <tr><td>Does the child fixate on a target and follow it smoothly?</td><td>Failure to fixate by 6&#8211;8 weeks or follow by 3&#8211;4 months is a red flag for significant visual impairment.</td></tr>
+      <tr><td>Cover each eye alternately &#8212; note if child objects more to one side, or if eye deviates when uncovered.</td><td>Unequal objection suggests amblyopia. Refixation on the cover-uncover test indicates strabismus.</td></tr>
+    </table>
+<div class="fc fc-r"><div class="fc-t">&#9650; Failure to fixate or follow by 3&#8211;4 months</div><div class="fc-b"><strong>Refer to NP.</strong> Typical referral path: urgent referral. Specialist: <em>Paediatric ophthalmologist &#8212; urgent</em>.</div></div><div class="fc fc-r"><div class="fc-t">&#9650; Confirmed strabismus (refixation on cover test)</div><div class="fc-b"><strong>Refer to NP.</strong> Typical referral path: orthoptist assessment. Specialist: <em>Orthoptist / ophthalmologist</em>.</div></div>
+  </div>
+  <div class="card">
+    <div class="ct"><div class="dot d-m"></div>Vision chart &#8212; 4 year check only</div>
+    <p class="bt">Formal visual acuity at 3 metres using an age-appropriate chart (Kay Pictures, HOTV, or Lea Symbols). Test each eye separately with fellow eye fully occluded. Record as 6/__ for each eye.</p>
+    <div class="pills">
+      <div class="pill pill-g"><div class="pill-lbl">6/6 &#8211; 6/9</div><div class="pill-desc">Normal for age. No action required.</div></div>
+      <div class="pill pill-w"><div class="pill-lbl">6/12 one eye</div><div class="pill-desc">Borderline &#8212; retest at second visit before referring.</div></div>
+      <div class="pill pill-r"><div class="pill-lbl">6/18 or worse</div><div class="pill-desc">Or &#8805;2-line interocular difference &#8212; refer to NP.</div></div>
+    </div>
+<div class="fc fc-r"><div class="fc-t">&#9650; Visual acuity 6/18 or worse, or &#8805;2-line interocular difference</div><div class="fc-b"><strong>Refer to NP.</strong> Typical referral path: orthoptist review. Specialist: <em>Orthoptist, then ophthalmologist as indicated</em>.</div></div><div class="fc fc-r"><div class="fc-t">&#9650; Visual acuity 6/12 persisting at second visit</div><div class="fc-b"><strong>Refer to NP.</strong> Typical referral path: orthoptist review. Specialist: <em>Orthoptist</em>.</div></div>
+    <div class="tip tip-n"><strong>Testing conditions:</strong> Ensure adequate lighting, correct 3 m distance, and full occlusion of the fellow eye. Note head tilting or squinting even if the child achieves 6/9.</div>
+  </div>
+  <button class="nxt" onclick="go(4)">Next: ears &amp; hearing &rarr;</button>
+</div>
+
+<div class="sec" id="s4">
+  <p class="sh">Ear health &amp; hearing</p>
+  <p class="si">&#128241; CHDC App: Hearing &#8212; Otoscopy, Sound Scouts (4 year). Hearing loss is the most common sensory impairment in childhood. Conductive hearing loss from OME is highly prevalent and has significant consequences for language and learning if missed.</p>
+  <div class="card">
+    <div class="ct"><div class="dot d-n"></div>Ear history &#8212; all ages</div>
+    <table class="ww">
+      <tr><th>What to ask</th><th>Why it matters</th></tr>
+      <tr><td>Number of episodes of acute otitis media (AOM) in past 12 months.</td><td>&#8805;3 episodes in 6 months or &#8805;4 in 12 months = recurrent AOM &#8212; specialist review warranted.</td></tr>
+      <tr><td>Persistent or intermittent rhinorrhoea &#8212; duration, colour, frequency.</td><td>Chronic nasal congestion is associated with Eustachian tube dysfunction and OME, contributing to conductive hearing loss.</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="ct"><div class="dot d-t"></div>Tympanic membrane examination &#8212; all ages</div>
+    <p class="bt">A normal TM is pearly grey, translucent, with a well-defined cone of light and visible bony landmarks. Describe rather than just ticking Normal/Abnormal.</p>
+    <table class="ww">
+      <tr><th>Finding</th><th>What it means</th></tr>
+      <tr><td>Dull, opaque, amber or blue TM; loss of landmarks; decreased mobility</td><td>OME ('glue ear') &#8212; fluid behind drum without acute infection.</td></tr>
+      <tr><td>Bulging red/yellow TM, loss of landmarks, restricted mobility</td><td>Acute otitis media &#8212; assess for antibiotic indication per current Therapeutic Guidelines.</td></tr>
+      <tr><td>Perforation &#8212; irregular margin, visible middle ear structures</td><td>Document wet (active) or dry. Refer ENT regardless.</td></tr>
+      <tr><td>Not sighted</td><td>Wax occlusion most common &#8212; document reason. Refer if hearing concern present.</td></tr>
+    </table>
+    <div class="tip tip-n"><strong>Diagnosing AOM correctly:</strong> AOM requires <em>all three</em> of the following: (1) acute onset of symptoms; (2) abnormal tympanic membrane examination with signs of middle ear effusion (MEE); <em>and</em> (3) signs of middle ear inflammation (bulging TM, erythema, or otalgia). A red TM alone does <strong>not</strong> diagnose AOM &#8212; the most common cause of a red TM in a child is crying or a viral URTI. Most AOM episodes resolve spontaneously. Routine antibiotics are <strong>not</strong> recommended for uncomplicated AOM in children aged &#8805;2 years &#8212; use watchful waiting unless systemically unwell, immunocompromised, or bilaterally affected with severe symptoms. Refer to the RCH Clinical Practice Guideline (updated February 2025) and use the AOM management flowchart for antibiotic decision-making.</div>
+    <div class="tip tip-t"><strong>TM appearances &#8212; RCH image reference:</strong> Normal TM &middot; Injected TM &middot; Bulging/AOM &middot; OME &middot; Perforation &middot; Otitis externa. Images available via the <a href="https://www.rch.org.au/clinicalguide/guideline_index/Acute_Otitis_Media/" target="_blank" style="color:var(--teal)">RCH Acute Otitis Media CPG</a> (PIC Endorsed, last updated June 2021).</div>
+    <div class="tip tip-g"><strong>AOM management flowchart:</strong> <a href="https://www.rch.org.au/uploadedImages/Main/Content/clinicalguide/charts/AOM management flowchart_feb 2025.png" target="_blank" style="color:var(--green-dark)">View RCH AOM management flowchart (February 2025)</a></div>
+<div class="fc fc-ok"><div class="fc-b">&#10003; Pearly grey, translucent TM with visible cone of light and bony landmarks.</div></div><div class="fc fc-ok"><div class="fc-b">&#10003; No rhinorrhoea or rhinorrhoea consistent with brief viral URTI.</div></div><div class="fc fc-ok"><div class="fc-b">&#10003; No report of recurrent ear infections.</div></div><div class="fc fc-r"><div class="fc-t">&#9650; Recurrent AOM &#8212; &#8805;3 in 6 months or &#8805;4 in 12 months</div><div class="fc-b"><strong>Refer to NP.</strong> Typical referral path: ENT referral via NP letter. Specialist: <em>ENT surgeon</em>.</div></div><div class="fc fc-r"><div class="fc-t">&#9650; OME persisting beyond 3 months with language delay or hearing concern</div><div class="fc-b"><strong>Refer to NP.</strong> Typical referral path: ENT referral via NP letter. Specialist: <em>ENT surgeon</em>.</div></div><div class="fc fc-r"><div class="fc-t">&#9650; TM perforation</div><div class="fc-b"><strong>Refer to NP.</strong> Typical referral path: ENT referral &#8212; not necessarily urgent unless wet/symptomatic. Specialist: <em>ENT surgeon</em>.</div></div><div class="fc fc-r"><div class="fc-t">&#9650; Aboriginal or Torres Strait Islander child with OME</div><div class="fc-b"><strong>Refer to NP.</strong> Typical referral path: lower threshold &#8212; ENT referral per NHMRC Ear Health guidelines. Specialist: <em>ENT surgeon</em>.</div></div>
+  </div>
+  <div class="card">
+    <div class="ct"><div class="dot d-g"></div>Sound Scouts &#8212; 4 year check only</div>
+    <p class="bt">Sound Scouts is a validated app-based pure-tone hearing screener for children aged 4&#8211;17 years, used with calibrated over-ear headphones. Login uses the SSIMPL clinic credentials (obtain from Ariane).</p>
+    <div class="tip tip-n"><strong>Before every test:</strong> Confirm the correct calibrated headphones are selected in the app. Results from uncalibrated equipment are unreliable.</div>
+    <p class="sub">Initial test &#8212; step by step</p>
+    <ul class="steps">
+      <li class="si2"><div class="snum">1</div><div><div class="stitle">Login</div><div class="sbody">Open Sound Scouts app. Tap Settings &rarr; Login. Enter SSIMPL User ID and password.</div></div></li>
+      <li class="si2"><div class="snum">2</div><div><div class="stitle">Create player</div><div class="sbody">Tap New Session &rarr; Start &rarr; I Agree &rarr; Create Player. Enter child's details, tap Submit &rarr; Test This Player.</div></div></li>
+      <li class="si2"><div class="snum">3</div><div><div class="stitle">Select Automatic Audiometer</div><div class="sbody">Choose Automatic Audiometer (not Triple Factor Hearing Screener). Tap Begin Test.</div></div></li>
+      <li class="si2"><div class="snum">4</div><div><div class="stitle">Select standardised equipment</div><div class="sbody">Choose the correct headphones from the list &#8212; mandatory. Do not proceed without selecting equipment.</div></div></li>
+      <li class="si2"><div class="snum">5</div><div><div class="stitle">Tone selection</div><div class="sbody">Select Standard tab. Default tests both ears at 500, 1000, 2000, and 4000 Hz to 20 dB HL. You can test one ear at a time if fatigue or focus is an issue.</div></div></li>
+      <li class="si2"><div class="snum">6</div><div><div class="stitle">Headphone sound check</div><div class="sbody">Tap Play and select the word you hear in each ear (Icecream / Meatpie / Popcorn). Ensure headphones are placed correctly &#8212; mark the right ear if helpful.</div></div></li>
+      <li class="si2"><div class="snum">7</div><div><div class="stitle">Explain the task to the child</div><div class="sbody">"You'll hear some beeps &#8212; tap the circle every time you hear one, even if it sounds very quiet. The beeps get quieter and quieter &#8212; that's normal." Single Circle Response mode is suitable for most children.</div></div></li>
+      <li class="si2"><div class="snum">8</div><div><div class="stitle">Trial &rarr; Begin Test</div><div class="sbody">Select Start Trial to try both modes. Choose preferred mode using button on the right. Tap Begin Test.</div></div></li>
+      <li class="si2"><div class="snum">9</div><div><div class="stitle">Review results</div><div class="sbody">Results show Pass or Refer per ear, Hearing Number, and audiogram. Red = right ear, blue = left ear. Check bottom of report for any Invalid/Unreliable frequencies.</div></div></li>
+    </ul>
+    <p class="sub">Interpreting results</p>
+    <div class="pills">
+      <div class="pill pill-g"><div class="pill-lbl">Pass</div><div class="pill-desc">Both ears pass at 20 dB HL. No action required.</div></div>
+      <div class="pill pill-w"><div class="pill-lbl">Incomplete / N/A</div><div class="pill-desc">Document reason. Reschedule or refer to NP if not completable at second attempt.</div></div>
+      <div class="pill pill-r"><div class="pill-lbl">Refer</div><div class="pill-desc">One or both ears fail. Refer to NP &#8212; typical path is audiology. Do not re-screen; refer directly.</div></div>
+    </div>
+    <p class="sub">Retest protocol &#8212; if frequency flagged Invalid/Unreliable</p>
+    <ul class="steps">
+      <li class="si2"><div class="snum">1</div><div><div class="stitle">Identify what needs retesting</div><div class="sbody">Check report for which ear (red = right, blue = left) and which frequency (500, 1000, 2000, or 4000 Hz) is flagged.</div></div></li>
+      <li class="si2"><div class="snum">2</div><div><div class="stitle">Start a new test for the same player</div><div class="sbody">Tap New Session &rarr; Start &rarr; I Agree &rarr; Player's Name &rarr; Test This Player. Select Automatic Audiometer &rarr; Standardised Equipment.</div></div></li>
+      <li class="si2"><div class="snum">3</div><div><div class="stitle">Update or Add New</div><div class="sbody">If a recent test is detected, select <strong>Update</strong> to produce one consolidated report. Select Add New only if you need a separate record.</div></div></li>
+      <li class="si2"><div class="snum">4</div><div><div class="stitle">Tone selection &#8212; specific frequencies only</div><div class="sbody">Standard tab. Uncheck all frequencies except the one(s) to be retested. Select the specific ear. If both ears need retesting, complete each ear as a separate run.</div></div></li>
+      <li class="si2"><div class="snum">5</div><div><div class="stitle">Complete check, trial, and test</div><div class="sbody">Follow same steps as initial test. Use the same test mode as the original session.</div></div></li>
+      <li class="si2"><div class="snum">6</div><div><div class="stitle">Report updates automatically</div><div class="sbody">If Update was selected, the report incorporates new results. Review the updated audiogram and document the final result.</div></div></li>
+    </ul>
+<div class="fc fc-r"><div class="fc-t">&#9650; Sound Scouts Refer &#8212; confirmed after retest if applicable</div><div class="fc-b"><strong>Refer to NP.</strong> Typical referral path: formal audiology referral via NP. Specialist: <em>Audiologist (paediatric). Do not repeat screening beyond one retest</em>.</div></div><div class="fc fc-r"><div class="fc-t">&#9650; Sound Scouts Incomplete at two attempts with hearing concern</div><div class="fc-b"><strong>Refer to NP.</strong> Typical referral path: audiology referral via NP. Specialist: <em>Audiologist (paediatric)</em>.</div></div>
+  </div>
+  <button class="nxt" onclick="go(5)">Next: oral health &rarr;</button>
+</div>
+
+<div class="sec" id="s5">
+  <p class="sh">Oral health &#8212; 'Lift the Lip'</p>
+  <p class="si">&#128241; CHDC App: Oral Health &#8212; Dental Caries Screening. Early childhood caries is largely preventable. The Lift the Lip technique enables detection at the earliest stage. Used at every Little Grove check from 6 months.</p>
+  <div class="card">
+    <div class="ct"><div class="dot d-n"></div>Technique</div>
+    <p class="bt">With the child settled, lift the upper lip firmly to expose the labial surface of the upper incisors and gum line. Use a light source. Examine lower anterior teeth also if possible.</p>
+  </div>
+  <div class="card">
+    <div class="ct"><div class="dot d-t"></div>What to look for</div>
+    <table class="ww">
+      <tr><th>Finding</th><th>Why it matters</th></tr>
+      <tr><td>Visible plaque &#8212; white or yellow deposits at the gum line.</td><td>Plaque is the precursor to caries. Indicates need for dietary and oral hygiene counselling and possible dental referral.</td></tr>
+      <tr><td>White spot lesions &#8212; chalky, opaque areas on enamel, typically cervical.</td><td>Early carious lesions &#8212; demineralisation without cavitation. Remineralisation possible with fluoride and diet change.</td></tr>
+      <tr><td>Brown cavitation or frank caries.</td><td>Active decay requiring dental treatment. Refer promptly.</td></tr>
+      <tr><td>Bleeding or swollen gums (18 months+).</td><td>Gingivitis &#8212; typically from inadequate brushing. Counsel on technique. Persistent bleeding warrants dental review.</td></tr>
+      <tr><td>Facial swelling &#8212; 4 year check.</td><td>May indicate dental abscess &#8212; urgent dental review or ED if systemic signs present.</td></tr>
+    </table>
+<div class="fc fc-ok"><div class="fc-b">&#10003; Erupted teeth clean, no visible plaque, pink healthy gingiva.</div></div><div class="fc fc-ok"><div class="fc-b">&#10003; Parent reports twice-daily brushing with age-appropriate fluoride toothpaste.</div></div><div class="fc fc-r"><div class="fc-t">&#9650; Any white spot lesion</div><div class="fc-b"><strong>Refer to NP.</strong> Typical referral path: dental referral via NP. Specialist: <em>SA Dental Service or private dentist</em>.</div></div><div class="fc fc-r"><div class="fc-t">&#9650; Frank caries or cavitation at any age</div><div class="fc-b"><strong>Refer to NP.</strong> Typical referral path: urgent dental referral via NP. Specialist: <em>SA Dental Service or private dentist &#8212; same week</em>.</div></div><div class="fc fc-r"><div class="fc-t">&#9650; Facial swelling with dental pain</div><div class="fc-b"><strong>Refer to NP.</strong> Typical referral path: refer to NP same day. Specialist: <em>Dentist same day; ED if systemically unwell &#8212; risk of cellulitis or sepsis</em>.</div></div><div class="fc fc-r"><div class="fc-t">&#9650; Persistent plaque with non-engagement from family</div><div class="fc-b"><strong>Refer to NP.</strong> Typical referral path: dental referral via NP. Specialist: <em>Community dental service for family support</em>.</div></div>
+  </div>
+  <button class="nxt" onclick="go(6)">Next: immunisation &rarr;</button>
+</div>
+
+<div class="sec" id="s6">
+  <p class="sh">Immunisation</p>
+  <p class="si">&#128241; CHDC App: Immunisation &#8212; NIP Schedule. At Little Grove checks, you are verifying coverage and identifying gaps &#8212; not administering vaccines. The Australian Immunisation Register (AIR) is the authoritative record; access via PRODA/HPOS or ask the parent to show the AIR history statement via myGov.</p>
+  <div class="card">
+    <div class="ct"><div class="dot d-t"></div>What to check</div>
+    <table class="ww">
+      <tr><th>What to look for</th><th>Why it matters</th></tr>
+      <tr><td>Is immunisation up to date per the NIP schedule for this child's age?</td><td>On-time vaccination protects the child and the population. Delays increase vulnerability, particularly for pertussis and measles.</td></tr>
+      <tr><td>Parental concerns, conscientious objection, or medical contraindications?</td><td>Understanding the reason guides follow-up. Contraindications must be documented. Conscientious objection has legal and funding implications.</td></tr>
+      <tr><td>Is the child overdue by more than one schedule point?</td><td>Catch-up schedules apply &#8212; refer to the NIP Catch-up Schedule or consult with Ariane.</td></tr>
+    </table>
+    <div class="tip tip-m"><strong>Confidence note:</strong> The NIP schedule is updated periodically. Always verify at immunise.health.gov.au or the Australian Immunisation Handbook. Do not rely on memory.</div>
+<div class="fc fc-r"><div class="fc-t">&#9650; Child significantly overdue with no documented reason</div><div class="fc-b"><strong>Refer to NP.</strong> Typical referral path: discuss with NP. Specialist: <em>GP or immunisation provider for catch-up schedule</em>.</div></div>
+  </div>
+  <button class="nxt" onclick="go(7)">Next: physical exam &rarr;</button>
+</div>
+
+<div class="sec" id="s7">
+  <p class="sh">Physical examination</p>
+  <p class="si">&#128241; CHDC App: Physical Examination &#8212; Age-Specific Findings. This section covers all age-specific and all-ages physical examination items from the Little Grove CHDC form.</p>
+  <div class="card">
+    <div class="ct"><div class="dot d-n"></div>6 month &#8212; head shape &amp; fontanelle</div>
+    <table class="ww">
+      <tr><th>What to look for</th><th>Why it matters</th></tr>
+      <tr><td>Anterior fontanelle &#8212; size, tension, and closure.</td><td>Typically closes 9&#8211;18 months. Bulging at rest (not crying) suggests raised intracranial pressure. Sunken suggests dehydration. Premature closure may indicate craniosynostosis.</td></tr>
+      <tr><td>Head shape &#8212; plagiocephaly, dolichocephaly, brachycephaly.</td><td>Positional plagiocephaly is very common and benign. Distinguish from craniosynostosis by assessing ear displacement on the flat side and checking for sutural ridging.</td></tr>
+    </table>
+<div class="fc fc-r"><div class="fc-t">&#9650; Bulging or tense fontanelle at rest</div><div class="fc-b"><strong>Refer to NP.</strong> Typical referral path: same-day medical review. Specialist: <em>General paediatrician or ED if acutely unwell</em>.</div></div><div class="fc fc-r"><div class="fc-t">&#9650; Craniosynostosis suspected &#8212; sutural ridging, ear displacement</div><div class="fc-b"><strong>Refer to NP.</strong> Typical referral path: paediatric review. Specialist: <em>Craniofacial service</em>.</div></div>
+  </div>
+  <div class="card">
+    <div class="ct"><div class="dot d-t"></div>6 month &#8212; hip abduction</div>
+    <table class="ww">
+      <tr><th>What to look for</th><th>Why it matters</th></tr>
+      <tr><td>With infant supine, hips and knees flexed to 90&#176;, abduct each hip. Both should abduct symmetrically to ~80&#176;.</td><td>Restriction or asymmetry may indicate developmental dysplasia of the hip (DDH). The 6-month check is the last routine opportunity for clinical DDH screening before weight-bearing.</td></tr>
+      <tr><td>Note clicks, clunks, or resistance on abduction.</td><td>A 'clunk' (Ortolani sign) indicates hip reduction &#8212; refer urgently. More significant than a 'click'.</td></tr>
+    </table>
+    <div class="tip tip-t"><strong>Technique video:</strong> <a href="https://www.youtube.com/watch?v=AS-Z7_pbmjM" target="_blank" style="color:var(--teal)">Hip abduction examination technique (YouTube)</a></div>
+<div class="fc fc-r"><div class="fc-t">&#9650; Restricted or asymmetric hip abduction</div><div class="fc-b"><strong>Refer to NP.</strong> Typical referral path: paediatric orthopaedics referral via NP &#8212; ultrasound or X-ray may be indicated. Specialist: <em>Paediatric orthopaedic surgeon</em>.</div></div>
+  </div>
+  <div class="card">
+    <div class="ct"><div class="dot d-g"></div>6 month &#8212; genitalia &amp; inguinal area</div>
+    <table class="ww">
+      <tr><th>What to look for</th><th>Why it matters</th></tr>
+      <tr><td>Inspect genitalia &#8212; normal anatomical appearance for sex.</td><td>Ambiguous genitalia requires urgent specialist review. Document respectfully; this is a sensitive examination.</td></tr>
+      <tr><td>Inguinal area &#8212; any masses or asymmetry?</td><td>Inguinal hernia presents as an intermittent or persistent groin swelling, more common in males and preterm infants. Incarceration risk.</td></tr>
+    </table>
+<div class="fc fc-r"><div class="fc-t">&#9650; Ambiguous genitalia</div><div class="fc-b"><strong>Refer to NP.</strong> Typical referral path: urgent paediatric review via NP. Specialist: <em>Paediatric endocrinology or urology &#8212; urgent</em>.</div></div><div class="fc fc-r"><div class="fc-t">&#9650; Inguinal hernia &#8212; groin mass intermittent or persistent</div><div class="fc-b"><strong>Refer to NP.</strong> Typical referral path: paediatric surgery referral via NP. Specialist: <em>Paediatric surgeon</em>.</div></div>
+  </div>
+  <div class="card">
+    <div class="ct"><div class="dot d-m"></div>All ages &#8212; testes</div>
+    <table class="ww">
+      <tr><th>What to look for</th><th>Why it matters</th></tr>
+      <tr><td>Palpate for testes bilaterally. Note position &#8212; fully descended, retractile, or undescended.</td><td>Cryptorchidism occurs in ~1% of term males at one year. Spontaneous descent after 6 months is unlikely. Orchidopexy before 18 months preserves fertility and reduces malignancy risk.</td></tr>
+    </table>
+<div class="fc fc-r"><div class="fc-t">&#9650; Undescended testis not previously referred</div><div class="fc-b"><strong>Refer to NP.</strong> Typical referral path: paediatric surgery referral via NP. Specialist: <em>Paediatric surgeon &#8212; orchidopexy ideally before 18 months</em>.</div></div><div class="fc fc-r"><div class="fc-t">&#9650; Testicular mass, sudden scrotal pain, or significant asymmetry</div><div class="fc-b"><strong>Refer to NP.</strong> Typical referral path: same-day review via NP. Specialist: <em>ED or paediatric surgery &#8212; urgent</em>.</div></div>
+  </div>
+  <div class="card">
+    <div class="ct"><div class="dot d-n"></div>All ages &#8212; skin</div>
+    <table class="ww">
+      <tr><th>What to look for</th><th>Why it matters</th></tr>
+      <tr><td>Inspect skin &#8212; colour, rashes, lesions, turgor, birthmarks.</td><td>Mongolian spots: benign, document to prevent confusion with bruising. Caf&#233;-au-lait spots: &gt;6 or &gt;1.5 cm diameter may indicate neurofibromatosis. Haemangiomas: most involute; note if ulcerating or near eye/airway.</td></tr>
+      <tr><td>Unexplained bruising &#8212; especially in pre-mobile infants.</td><td>Bruising in a child not yet weight-bearing is a significant child protection concern. Document location, shape, colour, and number. Discuss with Ariane immediately.</td></tr>
+    </table>
+    <div class="tip tip-m"><strong>Child protection:</strong> Bruising in a pre-mobile infant must be discussed with Ariane before the family leaves. Mandatory reporting obligations may apply &#8212; see Safeguarding section.</div>
+  </div>
+  <div class="card">
+    <div class="ct"><div class="dot d-t"></div>All ages &#8212; chest &amp; heart sounds</div>
+    <table class="ww">
+      <tr><th>What to look for</th><th>Why it matters</th></tr>
+      <tr><td>Auscultate lung fields bilaterally &#8212; equal air entry, absence of added sounds.</td><td>Wheeze: bronchiolitis (infants), asthma (older children), or foreign body. Crackles suggest lower respiratory tract infection.</td></tr>
+    </table>
+    <div class="tip tip-n"><strong>Breath sounds reference video:</strong> <a href="https://youtu.be/suN_IdWKqs0?si=IPEyTcBjlMPyYOu" target="_blank" style="color:var(--navy)">Paediatric breath sounds guide (YouTube)</a></div>
+    <table class="ww">
+      <tr><td>Auscultate heart sounds &#8212; rate, rhythm, any murmur?</td><td>Innocent murmurs are common (Still's murmur, pulmonary flow murmur). Features suggesting pathological murmur: pansystolic, harsh, grade &#8805;3/6, associated thrill, diastolic, or with symptoms (poor feeding, sweating, cyanosis, faltering growth).</td></tr>
+    </table>
+    <div class="tip tip-t"><strong>Cardiac auscultation video:</strong> <a href="https://youtu.be/zNHI-l_c-ls?si=VtauyxrG1n28UoXO" target="_blank" style="color:var(--teal)">Paediatric cardiac auscultation technique (YouTube)</a></div>
+<div class="fc fc-r"><div class="fc-t">&#9650; Murmur with pathological features or associated symptoms</div><div class="fc-b"><strong>Refer to NP.</strong> Typical referral path: urgent cardiology referral via NP. Specialist: <em>Paediatric cardiologist</em>.</div></div><div class="fc fc-r"><div class="fc-t">&#9650; Persistent wheeze or recurrent lower respiratory tract infections</div><div class="fc-b"><strong>Refer to NP.</strong> Typical referral path: management review or specialist referral via NP. Specialist: <em>Paediatric respiratory physician or general paediatrician</em>.</div></div>
+  </div>
+  <div class="card">
+    <div class="ct"><div class="dot d-g"></div>18 months and older &#8212; gait evaluation</div>
+    <table class="ww">
+      <tr><th>What to look for</th><th>Why it matters</th></tr>
+      <tr><td>Observe child walking across the room. Watch heel-strike, base of gait, arm swing, symmetry.</td><td>Broad-based gait is normal at 12&#8211;18 months. Persistent toe-walking after 2 years, asymmetric gait, or in-toeing/out-toeing beyond expected correction warrants assessment.</td></tr>
+      <tr><td>If not walking at 18 months &#8212; explore in developmental assessment.</td><td>Absent independent walking at 18 months is a developmental red flag requiring investigation.</td></tr>
+    </table>
+<div class="fc fc-r"><div class="fc-t">&#9650; Not walking independently at 18 months</div><div class="fc-b"><strong>Refer to NP.</strong> Typical referral path: developmental paediatrics referral via NP. Specialist: <em>Developmental paediatrician</em>.</div></div><div class="fc fc-r"><div class="fc-t">&#9650; Asymmetric gait, persistent limp, or pain on movement</div><div class="fc-b"><strong>Refer to NP.</strong> Typical referral path: paediatric or orthopaedic referral via NP. Specialist: <em>Paediatric orthopaedic surgeon or general paediatrician</em>.</div></div><div class="fc fc-r"><div class="fc-t">&#9650; Persistent toe-walking past 2 years</div><div class="fc-b"><strong>Refer to NP.</strong> Typical referral path: physiotherapy assessment via NP referral; consider neurological cause. Specialist: <em>Physiotherapist; neurological review if concerns persist</em>.</div></div>
+  </div>
+  <button class="nxt" onclick="go(8)">Next: development &rarr;</button>
+</div>
+
+<div class="sec" id="s8">
+  <p class="sh">Development &amp; milestones</p>
+  <p class="si">&#128241; CHDC App: Development &#8212; Milestones, Screening Tools, Red Flags. Screening results do not diagnose &#8212; they trigger further assessment. Always interpret scores alongside your clinical observations and parent concerns.</p>
+  <div class="card">
+    <div class="ct"><div class="dot d-n"></div>Screening tools at Little Grove</div>
+    <table class="ww">
+      <tr><th>Tool</th><th>When used</th><th>What it captures</th></tr>
+      <tr><td>ASQ-3</td><td>All ages &#8212; parent-completed or clinician-observed and completed</td><td>5 domains. Cut-off scores are age-interval specific &#8212; always read from the scoring sheet for the correct age band</td></tr>
+      <tr><td>ASQ:SE-2</td><td>Triggered when ASQ-3 Social-Emotional domain is BLACK</td><td>Social-emotional and behavioural concerns. Higher score = more concerns. Elevated score warrants further discussion &#8212; not a diagnosis</td></tr>
+      <tr><td>Brigance Early Childhood Screen</td><td>Triggered when two or more ASQ-3 domains are BLACK &#8212; completed at a second booking</td><td>Clinician-administered across 5 domains. Results: On track / Skills to practise / Extra support helpful</td></tr>
+    </table>
+    <div class="tip tip-n"><strong>Little Grove screening protocol:</strong> The <strong>ASQ-3</strong> is used at every check across all age groups &#8212; either parent-completed or clinician-observed and completed. (1) If the <strong>Social-Emotional domain</strong> is BLACK, complete the <strong>ASQ:SE-2</strong> at the same visit. (2) If <strong>two or more domains</strong> are BLACK, book the child for a second appointment to complete the <strong>Brigance Early Childhood Screen</strong>. Document all scores and clinical observations &#8212; do not rely on parent-report alone where clinical concerns exist.</div>
+    <div class="tip tip-m"><strong>Confidence note:</strong> ASQ-3 and ASQ:SE-2 cut-off scores are age-interval specific and must be read from the scoring sheet for the correct age band. Never rely on memory. Confirm which Brigance version is in use at Little Grove.</div>
+  </div>
+  <div class="card">
+    <div class="ct"><div class="dot d-t"></div>Milestones by age</div>
+    <div class="snote"><strong>Source:</strong> Mary Sheridan's From Birth to Five Years (4th ed., Sharma &amp; Cockerill) and Meggitt's Child Development: An Illustrated Guide. Cross-reference alongside direct observation and parent report.</div>
+    <div class="atabs">
+      <button class="at active" onclick="showAge('6m',this)">6 months</button>
+      <button class="at" onclick="showAge('18m',this)">18 months</button>
+      <button class="at" onclick="showAge('24m',this)">2 years</button>
+      <button class="at" onclick="showAge('36m',this)">3 years</button>
+      <button class="at" onclick="showAge('48m',this)">4 years</button>
+    </div>
+    <div class="mp active" id="mp-6m">
+      <div class="dg">
+        <div class="dp dp-gm"><div class="dp-l">Gross motor</div><div class="dp-c">Holds head steady when held sitting. Rolls front to back. Bears weight on forearms in prone. Beginning to sit with support.</div></div>
+        <div class="dp dp-fm"><div class="dp-l">Fine motor</div><div class="dp-c">Reaches and grasps with whole hand. Transfers objects hand to hand. Holds and mouths objects. Palmar grasp present.</div></div>
+        <div class="dp dp-lang"><div class="dp-l">Speech &amp; language</div><div class="dp-c">Vocalises with vowel sounds (aah, ooh). Babbles with consonants beginning. Laughs aloud. Turns head toward voice.</div></div>
+        <div class="dp dp-soc"><div class="dp-l">Social &amp; emotional</div><div class="dp-c">Smiles spontaneously. Shows pleasure at familiar people. Beginning to distinguish strangers. Responsive to facial expressions.</div></div>
+        <div class="dp dp-cog"><div class="dp-l">Cognitive</div><div class="dp-c">Attends to objects. Explores by mouthing. Anticipates feeding. Shows interest in mirror image.</div></div>
+        <div class="dp dp-vis"><div class="dp-l">Vision &amp; hearing</div><div class="dp-c">Follows moving objects through 180&#176;. Reaches for objects in line of sight. Turns to sound. Startles to loud noise.</div></div>
+      </div>
+    </div>
+    <div class="mp" id="mp-18m">
+      <div class="dg">
+        <div class="dp dp-gm"><div class="dp-l">Gross motor</div><div class="dp-c">Walks independently with broad gait. Climbs onto furniture. Walks upstairs holding hand. Runs (falls often). Kicks a ball.</div></div>
+        <div class="dp dp-fm"><div class="dp-l">Fine motor</div><div class="dp-c">Pincer grasp well established. Tower of 3&#8211;4 cubes. Turns pages (several at a time). Scribbles. Uses spoon.</div></div>
+        <div class="dp dp-lang"><div class="dp-l">Speech &amp; language</div><div class="dp-c">6&#8211;20+ words with meaning. Names familiar objects. Responds to simple instructions. Points to named body parts.</div></div>
+        <div class="dp dp-soc"><div class="dp-l">Social &amp; emotional</div><div class="dp-c">Plays alone but near others. Shows affection. Separation anxiety common. Imitates household tasks.</div></div>
+        <div class="dp dp-cog"><div class="dp-l">Cognitive</div><div class="dp-c">Simple pretend play beginning. Finds hidden objects. Matches familiar objects. Points to request.</div></div>
+        <div class="dp dp-vis"><div class="dp-l">Vision &amp; hearing</div><div class="dp-c">Points to pictures in books when named. Follows 2-step instructions. Responds to own name across a room.</div></div>
+      </div>
+      <div class="tip tip-m"><strong>18-month red flag:</strong> No words by 18 months requires hearing assessment and speech pathology referral. Do not wait for the next routine review.</div>
+    </div>
+    <div class="mp" id="mp-24m">
+      <div class="dg">
+        <div class="dp dp-gm"><div class="dp-l">Gross motor</div><div class="dp-c">Walks up/down stairs holding rail (one step at a time). Runs well. Kicks ball without falling.</div></div>
+        <div class="dp dp-fm"><div class="dp-l">Fine motor</div><div class="dp-c">Tower of 6+ cubes. Turns single book pages. Whole-hand crayon grip. Scribbles spontaneously.</div></div>
+        <div class="dp dp-lang"><div class="dp-l">Speech &amp; language</div><div class="dp-c">50+ words. Combines 2&#8211;3 words. Refers to self by name. Follows 2-step instructions.</div></div>
+        <div class="dp dp-soc"><div class="dp-l">Social &amp; emotional</div><div class="dp-c">Parallel play. Symbolic play beginning. Shows affection openly. Tantrums normal.</div></div>
+        <div class="dp dp-cog"><div class="dp-l">Cognitive</div><div class="dp-c">Matches 2&#8211;3 colours. Simple puzzles. Understands "one" and "two". Imitates adults.</div></div>
+        <div class="dp dp-vis"><div class="dp-l">Vision &amp; hearing</div><div class="dp-c">Points to named pictures in a book. Responds to own name across a room.</div></div>
+      </div>
+    </div>
+    <div class="mp" id="mp-36m">
+      <div class="dg">
+        <div class="dp dp-gm"><div class="dp-l">Gross motor</div><div class="dp-c">Alternating feet on stairs. Rides tricycle. Confident running, jumping, climbing.</div></div>
+        <div class="dp dp-fm"><div class="dp-l">Fine motor</div><div class="dp-c">Copies a circle. Tripod grip emerging. Threads large beads. Cuts paper with scissors.</div></div>
+        <div class="dp dp-lang"><div class="dp-l">Speech &amp; language</div><div class="dp-c">4&#8211;5 word sentences. Plurals and past tense (some errors). Gives full name and age. Speech mostly clear.</div></div>
+        <div class="dp dp-soc"><div class="dp-l">Social &amp; emotional</div><div class="dp-c">Cooperative play. Understands "mine/yours". Empathy developing. Role play. Separates from carer more easily.</div></div>
+        <div class="dp dp-cog"><div class="dp-l">Cognitive</div><div class="dp-c">Names colours and basic shapes. Rote counts to 3. Understands same/different. Follows 3-part instructions.</div></div>
+        <div class="dp dp-vis"><div class="dp-l">Vision &amp; hearing</div><div class="dp-c">Listens to stories with interest. Follows 3-step directions. Identifies named pictures and objects consistently.</div></div>
+      </div>
+    </div>
+    <div class="mp" id="mp-48m">
+      <div class="dg">
+        <div class="dp dp-gm"><div class="dp-l">Gross motor</div><div class="dp-c">Hops on one foot. Walks along a line. Confident climbing. Throws and catches large ball. Established pedalling.</div></div>
+        <div class="dp dp-fm"><div class="dp-l">Fine motor</div><div class="dp-c">Copies a cross and square. Draws person with 4+ body parts. Scissors more accurate. Established hand preference.</div></div>
+        <div class="dp dp-lang"><div class="dp-l">Speech &amp; language</div><div class="dp-c">5&#8211;6 word sentences. Uses conjunctions. Tells simple stories. Speech clear to strangers. Many questions.</div></div>
+        <div class="dp dp-soc"><div class="dp-l">Social &amp; emotional</div><div class="dp-c">Cooperative play; has friends. Understands rules and turn-taking. More independent.</div></div>
+        <div class="dp dp-cog"><div class="dp-l">Cognitive</div><div class="dp-c">Counts to 10+. Colours and shapes reliably. Understands past/future. Beginning to distinguish fantasy from reality.</div></div>
+        <div class="dp dp-vis"><div class="dp-l">Vision &amp; hearing</div><div class="dp-c">Vision chart at 3 m. Sound Scouts hearing screen. Follows complex multi-step instructions.</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ct"><div class="dot d-g"></div>Developmental red flags &#8212; act before the family leaves</div>
+<div class="fc fc-r"><div class="fc-t">&#9650; Regression in any domain at any age</div><div class="fc-b"><strong>Refer to NP.</strong> Typical referral path: discuss with Ariane before family leaves. Specialist: <em>Developmental paediatrician &#8212; urgent. Do not assume stress-related without investigation</em>.</div></div><div class="fc fc-r"><div class="fc-t">&#9650; No words at 18 months / no two-word phrases at 24 months</div><div class="fc-b"><strong>Refer to NP.</strong> Typical referral path: hearing assessment and speech pathology referral via NP. Specialist: <em>Speech-language pathologist; audiology if not already completed</em>.</div></div><div class="fc fc-r"><div class="fc-t">&#9650; No response to name or limited eye contact at 18&#8211;24 months</div><div class="fc-b"><strong>Refer to NP.</strong> Typical referral path: discuss with Ariane before raising with family. Specialist: <em>Developmental paediatrician &#8212; autism pathway</em>.</div></div><div class="fc fc-r"><div class="fc-t">&#9650; Not walking independently at 18 months</div><div class="fc-b"><strong>Refer to NP.</strong> Typical referral path: paediatric assessment via NP referral. Specialist: <em>Developmental paediatrician; physiotherapy</em>.</div></div><div class="fc fc-r"><div class="fc-t">&#9650; ASQ-3 score below cut-off on any domain</div><div class="fc-b"><strong>Refer to NP.</strong> Typical referral path: discuss with Ariane. Specialist: <em>Speech pathologist / OT / physiotherapist / developmental paediatrician depending on domain</em>.</div></div><div class="fc fc-r"><div class="fc-t">&#9650; Elevated ASQ:SE-2 at or above age-specific cut-off</div><div class="fc-b"><strong>Refer to NP.</strong> Typical referral path: discuss with Ariane. Specialist: <em>Paediatric psychologist or developmental paediatrician &#8212; autism/behavioural pathway</em>.</div></div>
+  </div>
+  <button class="nxt" onclick="go(9)">Next: talking with families &rarr;</button>
+</div>
+
+<div class="sec" id="s9">
+  <p class="sh">Talking with families</p>
+  <p class="si">How you communicate findings is as important as what you find. Your tone and language determine whether families engage with recommendations &#8212; or disengage entirely.</p>
+  <div class="card">
+    <div class="ct"><div class="dot d-n"></div>Starting the conversation</div>
+    <div class="cb cb-n"><div class="cb-lbl">Suggested opening</div><p>"Before we go through the questionnaire, I'd love to hear from you &#8212; is there anything about [child's name]'s development that you've been thinking about or that you'd like us to look at today?"</p></div>
+    <div class="cb cb-note"><div class="cb-lbl">Why this works</div><p>It gives the parent permission to voice concerns without feeling like they are criticising their child. It builds rapport before you move into structured assessment.</p></div>
+  </div>
+  <div class="card">
+    <div class="ct"><div class="dot d-t"></div>Sharing results &#8212; when things are on track</div>
+    <div class="cb cb-n"><div class="cb-lbl">Example</div><p>"The questionnaire shows that [name]'s development is on track across all the areas we looked at today. That's great news. Is there anything you'd like more information about &#8212; like activities you can do at home to support her language development?"</p></div>
+    <div class="cb cb-note"><div class="cb-lbl">Note</div><p>Even when results are positive, offer something actionable. It builds trust and demonstrates the value of the check beyond a simple "all clear".</p></div>
+  </div>
+  <div class="card">
+    <div class="ct"><div class="dot d-m"></div>Raising a concern sensitively</div>
+    <div class="cb cb-n"><div class="cb-lbl">Example</div><p>"I noticed today that [name] isn't yet putting two words together &#8212; things like 'more juice' or 'daddy go'. At this age, we'd usually expect to hear that. It doesn't mean anything is wrong, but it is something we'd like to keep an eye on and get some extra support around. I'd like to refer you to a speech pathologist &#8212; they're the best people to help us understand what's going on and what to do next. How does that sound?"</p></div>
+    <div class="cb cb-note"><div class="cb-lbl">Key principles</div><p>Name the specific observation. Normalise the referral. Invite the parent into the decision. Avoid the word "delayed" &#8212; use "not yet" language instead.</p></div>
+  </div>
+  <div class="card">
+    <div class="ct"><div class="dot d-g"></div>When a parent disagrees with your concern</div>
+    <div class="cb cb-n"><div class="cb-lbl">Example</div><p>"That's really helpful context &#8212; you know [name] better than anyone. I'll make a note of what we've discussed today, and if you ever want to revisit it or have more questions, we're always here. I might just flag it as something to review at the next check if that's okay."</p></div>
+  </div>
+  <div class="tip tip-t"><strong>Always document:</strong> Record the conversation, the parent's response, and your clinical reasoning. If you recommended referral and the parent declined, document that too.</div>
+  <button class="nxt" onclick="go(10)">Next: safeguarding &amp; resources &rarr;</button>
+</div>
+
+<div class="sec" id="s10">
+  <p class="sh">Safeguarding &amp; resources</p>
+  <p class="si">Developmental assessment and child protection are inseparable. Developmental delay, regression, or unusual behavioural presentations may be the first visible sign of abuse, neglect, or family adversity.</p>
+  <div class="card">
+    <div class="ct"><div class="dot d-m"></div>Development as a safeguarding lens</div>
+    <div class="stier stier-1"><div class="stnum">1</div><div><div class="stt">Significant delay with no medical explanation</div><div class="std">Particularly with poor weight gain, poor hygiene, or infrequent medical contact. Consider neglect.</div></div></div>
+    <div class="stier stier-2"><div class="stnum">2</div><div><div class="stt">Regression following a disclosed or suspected abusive event</div><div class="std">A child who was developing typically and then regresses after a change in family circumstances warrants careful attention.</div></div></div>
+    <div class="stier stier-3"><div class="stnum">3</div><div><div class="stt">Emotional or behavioural presentation inconsistent with age</div><div class="std">Extreme withdrawal, aggression, hypersexualised behaviour, or dissociation in a young child requires careful assessment.</div></div></div>
+  </div>
+  <div class="card">
+    <div class="ct"><div class="dot d-n"></div>Mandatory reporting &#8212; South Australia</div>
+    <p class="bt">Under the SA Children and Young People (Safety) Act 2017, you are a mandatory notifier. You must notify CARL if you have a reasonable suspicion that a child is being abused, neglected, or exposed to family violence. You do not need proof. Your obligation is individual &#8212; you do not need management approval before contacting CARL.</p>
+    <div class="stier stier-1"><div class="stnum">!</div><div><div class="stt">CARL: 13 14 78 &#8212; 24 hours, 7 days</div><div class="std">Notify before the end of your shift. When in doubt, discuss with Ariane and err on the side of reporting.</div></div></div>
+    <div class="tip tip-t">Read LG-POL-CS-01 and LG-PROC-CS-01 before you begin clinical work. Available from Ariane.</div>
+  </div>
+  <div class="card">
+    <div class="ct"><div class="dot d-t"></div>Key resources</div>
+    <div class="divlbl">Primary texts</div>
+    <div class="ri"><span class="rbadge rb-bk">Book</span><div><div class="rtitle">Mary Sheridan's From Birth to Five Years (4th ed.)</div><div class="rdesc">Sharma &amp; Cockerill. The clinical backbone of this module. Your first port of call for any milestone question.</div></div></div>
+    <div class="ri"><span class="rbadge rb-bk">Book</span><div><div class="rtitle">Child Development: An Illustrated Guide &#8212; Carolyn Meggitt</div><div class="rdesc">Accessible and visual. Strong on what developmental skills look like in practice.</div></div></div>
+    <div class="divlbl">Screening tools</div>
+    <div class="ri"><span class="rbadge rb-tl">Tool</span><div><div class="rtitle">ASQ-3 / ASQ:SE-2</div><div class="rdesc">Parent-completed. Used at all 2yr+ CHDCs. Cut-off scores are age-interval specific &#8212; always check the scoring sheet.</div></div></div>
+    <div class="ri"><span class="rbadge rb-tl">Tool</span><div><div class="rtitle">Brigance Early Childhood Screen</div><div class="rdesc">Clinician-administered. Read the instructions and scoring guide before your first supervised use.</div></div></div>
+    <div class="ri"><span class="rbadge rb-tl">Tool</span><div><div class="rtitle">Sound Scouts</div><div class="rdesc"><a href="https://soundscouts.com.au" target="_blank">soundscouts.com.au</a> &#8212; 1300 424 122. SSIMPL login required (obtain from Ariane). Calibrated headphones must be used.</div></div></div>
+    <div class="divlbl">Online references</div>
+    <div class="ri"><span class="rbadge rb-on">Online</span><div><div class="rtitle">Raising Children Network</div><div class="rdesc"><a href="https://raisingchildren.net.au" target="_blank">raisingchildren.net.au</a> &#8212; trusted Australian parent resource for post-CHDC family conversations.</div></div></div>
+    <div class="ri"><span class="rbadge rb-on">Online</span><div><div class="rtitle">Australian Immunisation Handbook</div><div class="rdesc"><a href="https://immunisationhandbook.health.gov.au" target="_blank">immunisationhandbook.health.gov.au</a> &#8212; always verify the current NIP schedule here, not from memory.</div></div></div>
+    <div class="ri"><span class="rbadge rb-on">Online</span><div><div class="rtitle">CDC Learn the Signs. Act Early.</div><div class="rdesc"><a href="https://www.cdc.gov/actearly" target="_blank">cdc.gov/actearly</a> &#8212; free downloadable milestone checklists for 2yr, 3yr and 4yr checks.</div></div></div>
+  </div>
+  <div class="tip tip-n"><strong>Your next step:</strong> Once you have worked through this module, speak with Ariane to arrange observation of a supervised CHDC before seeing children independently. Supervised practice is essential.</div>
+</div>
+
+<div class="footer">
+  <div class="fbrand"><strong>Little Grove</strong> &#8212; Child, Adolescent &amp; Family Health<br>admin@littlegrove.com.au &nbsp;|&nbsp; 1300 704 741 &nbsp;|&nbsp; littlegrove.com.au</div>
+  <div class="fcontact">Clinical questions &#8212; contact Ariane<br>Director &amp; Nurse Practitioner</div>
+</div>
+</div>
+
+<script>
+
+var secs=document.querySelectorAll('.sec'),nbs=document.querySelectorAll('.nb'),N=secs.length;
+function go(i){
+  secs.forEach(function(s){s.classList.remove('active')});
+  nbs.forEach(function(b){b.classList.remove('active')});
+  secs[i].classList.add('active');nbs[i].classList.add('active');
+  var pct=Math.round(((i+1)/N)*100);
+  document.getElementById('prog').style.width=pct+'%';
+  document.getElementById('prog-lbl').textContent='Section '+(i+1)+' of '+N;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function showAge(age,btn){
+  document.querySelectorAll('.mp').forEach(function(p){p.classList.remove('active')});
+  document.querySelectorAll('.at').forEach(function(b){b.classList.remove('active')});
+  document.getElementById('mp-'+age).classList.add('active');
+  btn.classList.add('active');
+}
+
+</script>
+</body>
+</html>
